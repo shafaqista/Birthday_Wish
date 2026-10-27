@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, my love 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#fffafc;--bg2:#ffe6f0;--card:#fff;--text:#7a3358;--pink:#ff7eb0;--soft:#ffd3e4;--shadow:rgba(255,126,176,.28);color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{font-family:'Quicksand',system-ui,sans-serif;color:var(--text);background:linear-gradient(160deg,var(--bg1),var(--bg2))}
+h1,h2{font-family:'Pacifico',cursive;color:var(--pink);font-weight:400;margin:.2em 0}
+.page{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 16px 90px;text-align:center;overflow-y:auto;opacity:0;pointer-events:none;transform:translateX(40px) scale(.97);transition:.6s;z-index:2}
+.page.active{opacity:1;pointer-events:auto;transform:none}
+.page.left{transform:translateX(-40px) scale(.97)}
+.big{font-size:clamp(2.2rem,9vw,4rem)}
+.btn{background:var(--pink);color:#fff;border:0;border-radius:50px;padding:12px 28px;font:700 1rem 'Quicksand',sans-serif;cursor:pointer;box-shadow:0 6px 18px var(--shadow);transition:.2s}
+.btn:hover{transform:scale(1.08)}.btn:active{transform:scale(.95)}
+.bounce{animation:bounce 1.6s infinite}
+@keyframes bounce{50%{transform:translateY(-10px)}}
+/* floating hearts */
+#hearts{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.fh{position:absolute;bottom:-40px;animation:rise linear forwards}
+@keyframes rise{to{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+/* nav */
+#nav{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;justify-content:center;align-items:center;gap:14px;padding:12px 12px calc(14px + env(safe-area-inset-bottom,0px))}
+.arrow{width:46px;height:46px;border-radius:50%;border:0;background:var(--card);color:var(--pink);font-size:1.3rem;cursor:pointer;box-shadow:0 4px 12px var(--shadow)}
+.arrow:disabled{opacity:.3}
+#dots{display:flex;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--soft);transition:.3s;cursor:pointer}
+.dot.on{background:var(--pink);transform:scale(1.5)}
+#music{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:10;width:44px;height:44px;border-radius:50%;border:0;background:var(--card);font-size:1.3rem;cursor:pointer;box-shadow:0 4px 12px var(--shadow)}
+/* cake */
+.cake{position:relative;width:200px;margin:30px auto 10px}
+.tier{margin:0 auto;border-radius:14px 14px 8px 8px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.08)}
+.t1{width:100px;height:50px;background:#ffc2d9}.t2{width:150px;height:60px;background:#ffd8e7}.t3{width:200px;height:70px;background:#ffa3c6}
+.candles{display:flex;justify-content:center;gap:18px;height:50px;align-items:flex-end}
+.candle{width:10px;height:34px;background:#fff;border:2px solid var(--pink);border-radius:4px;position:relative}
+.flame{position:absolute;top:-22px;left:-3px;width:12px;height:18px;background:radial-gradient(#fff6a0,#ffb300);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flick .3s infinite alternate;transition:.4s}
+.out .flame{opacity:0;transform:scale(0)}
+@keyframes flick{to{transform:scale(1.15) rotate(5deg)}}
+/* photos */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(560px,100%)}
+.photo{aspect-ratio:1;background:var(--card);border-radius:14px;padding:6px 6px 22px;box-shadow:0 6px 16px var(--shadow);cursor:pointer;position:relative;transition:.3s;transform:rotate(var(--r))}
+.photo:hover{transform:scale(1.1) rotate(0);z-index:3}
+.photo img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.photo .ph{width:100%;height:100%;border-radius:8px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff}
+.photo small{position:absolute;bottom:3px;left:0;right:0;font-size:.7rem;font-weight:700}
+#lightbox{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:20;display:none;align-items:center;justify-content:center}
+#lightbox img{max-width:90%;max-height:85%;border:8px solid #fff;border-radius:12px}
+/* flip cards */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:min(440px,100%)}
+.fc{perspective:900px;aspect-ratio:3/4;cursor:pointer}
+.fi{position:relative;width:100%;height:100%;transition:transform .8s;transform-style:preserve-3d}
+.fc.flip .fi{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;box-shadow:0 8px 20px var(--shadow)}
+.front{background:linear-gradient(135deg,#ffb3d0,#ff7eb0);color:#fff;font-size:1.1rem;font-weight:700}
+.front span{font-size:3rem}
+.back{background:var(--card);transform:rotateY(180deg);font-size:.9rem;line-height:1.4}
+.back b{font-family:'Pacifico';color:var(--pink);font-size:1.2rem;font-weight:400}
+/* big birthday text */
+#bigWish{position:fixed;inset:0;z-index:15;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none;opacity:0;padding:20px;background:radial-gradient(rgba(255,255,255,.8),rgba(255,255,255,0) 70%)}
+#bigWish span{font-family:'Pacifico',cursive;font-size:clamp(2.6rem,13vw,6rem);color:var(--pink);text-shadow:0 4px 0 #fff,0 8px 24px var(--shadow);line-height:1.25;display:block;transform:scale(.2)}
+#bigWish.show{animation:wishFade 5s forwards}
+#bigWish.show span{animation:wishPop 1s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes wishFade{0%{opacity:0}10%,80%{opacity:1}100%{opacity:0}}
+@keyframes wishPop{to{transform:scale(1)}}
+/* game */
+#gameBox{position:relative;width:min(400px,100%);height:min(330px,48vh);background:var(--card);border-radius:20px;box-shadow:0 8px 22px var(--shadow);overflow:hidden;touch-action:none;margin:8px 0}
+#basket{position:absolute;left:50%;bottom:4px;transform:translateX(-50%);font-size:2.4rem;pointer-events:none}
+.gi{position:absolute;top:0;left:0;font-size:1.7rem;pointer-events:none}
+#gameMsg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;font-weight:700;background:rgba(255,255,255,.88);color:var(--text)}
+/* letter */
+#env{font-size:7rem;cursor:pointer}
+.paper{display:none;background:var(--card);width:min(480px,100%);max-height:62vh;overflow-y:auto;border-radius:16px;padding:22px;box-shadow:0 10px 30px var(--shadow);text-align:left;line-height:1.7;border-left:6px solid var(--soft);animation:pop .7s}
+.paper p{margin:.5em 0}
+@keyframes pop{from{transform:scale(.3) translateY(80px);opacity:0}}
+.tw{white-space:pre-wrap}
+
+* ===== MOBILE FIT: keeps every page on one screen, no scrolling ===== */
+html,body{height:100dvh;width:100%;overflow:hidden;overscroll-behavior:none}
+.page{padding:12px 12px 76px}
+@media (max-height:700px),(max-width:480px){
+  .big{font-size:clamp(1.8rem,8vw,3rem)}
+  .page h2{font-size:1.5rem!important}
+  .grid{gap:6px;width:min(340px,100%)}
+  .photo{padding:4px 4px 16px;border-radius:10px}
+  .photo small{font-size:.6rem}
+  .cards{gap:8px;width:min(330px,100%)}
+  .fc{aspect-ratio:1/1.05}
+  .front{font-size:.95rem}.front span{font-size:2rem}
+  .back{font-size:.72rem;line-height:1.25;padding:8px}
+  .cake{transform:scale(.8);margin:-10px auto -20px}
+  #env{font-size:5rem}
+  .paper{max-height:55vh;font-size:.9rem;line-height:1.5;padding:16px}
+  #gameBox{height:min(300px,40dvh)}
+  
+ 
+
+/* ===== RESPONSIVE PHOTO GRID ===== */
+.page{justify-content:safe center}
+.grid{grid-template-columns:repeat(3,1fr)}
+@media (max-width:520px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px;width:min(340px,100%)}
+  .photo small{font-size:.7rem}
+}
+@media (max-width:300px){
+  .grid{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div id="hearts"></div>
+<button id="music" title="Music on/off">🎵</button>
+
+<!-- PAGE 1: WELCOME -->
+<section class="page active">
+  <div class="bounce" style="font-size:5rem">🎀</div>
+  <h1 class="big" id="welcomeTitle"></h1>
+  <p id="welcomeSub" style="font-size:1.1rem;max-width:320px"></p>
+  <button class="btn" id="start">Tap to open 💌</button>
+</section>
+
+<!-- PAGE 2: CAKE -->
+<section class="page">
+  <h2 class="big" id="cakeTitle" style="font-size:2rem">Fuuuuu Daw Dekhi 😃😃</h2>
+  <div class="cake" id="cake">
+    <div class="candles"><div class="candle"><div class="flame"></div></div><div class="candle"><div class="flame"></div></div><div class="candle"><div class="flame"></div></div></div>
+    <div class="tier t1"></div><div class="tier t2"></div><div class="tier t3"></div>
+  </div>
+  <p id="cakeMsg">Close your eyes, make a wish, then blow the candles 🕯️</p>
+  <button class="btn" id="blow">Blow the candles 💨</button>
+</section>
+
+<!-- PAGE 3: PHOTOS -->
+<section class="page">
+  <h2 style="font-size:2rem">Chobi Dekhoooo 👀📸</h2>
+  <h3>Khub beshi to nai,,, Ekhn theke chobi tulte hobe🥲, Memories rakha uchit :))</h3>
+  <p style="margin:0 0 10px;font-size:.9rem">Tap a photo to see it bigger</p>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- PAGE 4: FLIP CARDS -->
+<section class="page">
+  <h2 style="font-size:2rem">Why You’re Special 💗</h2>
+  <p style="margin:0 0 10px;font-size:.9rem">Tap each card to flip it</p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<!-- PAGE 5: MINI GAME -->
+<section class="page" id="gamePage">
+  <h2 style="font-size:2rem">Catch My Heart 💘</h2>
+  <p style="margin:0;font-size:.9rem">Slide to move the basket. Catch 💖 and 🌸, avoid 💔!</p>
+  <div id="gameBox"><div id="basket">🧺</div><div id="gameMsg">Ready?</div></div>
+  <div style="font-weight:700;margin-bottom:8px" id="score"></div>
+  <button class="btn" id="playBtn">Play 🎮</button>
+</section>
+
+<!-- PAGE 6: LETTER -->
+<section class="page">
+  <h2 style="font-size:2rem">A Letter For You 💌</h2>
+  <div id="env" class="bounce">💌</div>
+  <p id="envHint">Tap the envelope</p>
+  <div class="paper" id="paper"></div>
+</section>
+
+<!-- PAGE 6: FINALE -->
+<section class="page">
+  <div style="font-size:5rem" class="bounce">🎂</div>
+  <h1 class="big" id="finalTitle"></h1>
+  <p id="finalSub" style="font-size:1.1rem;max-width:320px"></p>
+  <button class="btn" id="party">Celebrate! 🎉</button>
+</section>
+
+<div id="bigWish"><span id="bigWishText"></span></div>
+
+<div id="nav">
+  <button class="arrow" id="prev">‹</button>
+  <div id="dots"></div>
+  <button class="arrow" id="next">›</button>
+</div>
+<div id="lightbox"><img alt=""></div>
+
+<script>
+/* =====================================================
+   ✏️ EDIT THIS PART — everything personal lives here
+   ===================================================== */
+const NAME = "My Love";                 // her name or nickname
+const FROM = "Nuren";               // your name (end of the letter)
+const WELCOME_SUB = "Tomar jonno banano ekta chotto gift...Hope tomar valo lagbe :))";
+const FINAL_SUB = "You make my world brighter every single day. I love you endlessly. 💖";
+
+/* 📸 PHOTOS — to use your own pictures:
+   1) Put photo files in the same folder as this file (e.g. "pic1.jpg")
+   2) Replace  src:""  with  src:"pic1.jpg"
+   Leave src empty and you can tap the box to pick a photo from your phone instead. */
+const PHOTOS = [
+  {src:"photo_2026-08-19_23-52-35.jpg", caption:"First Date bola jay ki? :) GLOW!!!!"},
+  {src:"photo_2026-10-26_01-06-51.jpg", caption:"Pookie Ramisha 🥺"},
+  {src:"photo_2026-10-26_01-04-30.jpg", caption:"Ekta Nil Poriiiii 💙"},
+  {src:"photo_2026-10-26_02-17-28.jpg", caption:"Gelam More 😵🥀"},
+  {src:"photo_2026-07-31_12-31-57.jpg", caption:"Silly us "},
+  {src:"photo_2026-07-25_17-55-05 (2).jpg", caption:"Tip Pore chilo 😩. Isshhh"},
+  {src:"photo_2026-10-26_01-07-05.jpg", caption:"Dekho ekta Icecream Khay :v"},
+  {src:"20260808_123144_123525.jpg", caption:"BUET Adventure"},
+  {src:"20260808_123025_123545.jpg", caption:"Arekta BUET Adventure"}
+];
+
+/* 💎 FLIP CARDS — front title + message on the back */
+const CARDS = [
+  {icon:"🏡", title:"Trust", text:"Jodi amake ek kothay jiggesh korish,,, What is the best thing about you? Eta hocche,, Ami toke chokh bondho kore trust krte pari... Tui baki sobar theke alada, Someone really Special✨✨"},
+  {icon:"🌸", title:"Beauty",       text:"Toke dekhle jehetu sob e vule jai,,, To ar to kisu bolar baki thake na... Tumi onk sundor ✨... Ami to golei jai🫠"},
+  {icon:"✨", title:"Mindset",       text:"Tor mindset sobar theke alada & luckily onk kichu amr sathe mileo :))... Jekono moment e tui jevabe Allah er upor vorsha korish,,, ei jinish ta amr always best lage. Tui best 💙"},
+  {icon:"🤍", title:"Kindness",     text:"Your heart is pure gold. Sobaike niye eto vabish,,, ami sotti obak hoi... Amake ektu care korish. Ektu dekhe rakhish, Please 🥺"},
+  {icon:"🧸", title:"Cuteness",     text:"CUTE er Dibba ekta 🥺... Dekhlei mon ta khushi hoye jay✨... Tomake Allah aro cute banay dek... Amr toke dekhle ekta cute bacchar moto lage......."},
+  {icon:"📚", title:"Intelligence", text:"Doctor Manush,,, Eshb bolte gele nijer e lojja lage... Etto Brilliant ekta meye 💖"},
+
+];
+
+/* 💌 THE LETTER — each line in quotes is one paragraph */
+const LETTER = [
+  "Priyo Ramisha,,",
+	"Happy Birthday❤️❤️... Boro e hoye jacchish... Last 2-3 bochore nijei toke koto boro hoye jaite dekhlam... Toke amr shuru thekei best mone hoise... And tui always sheta prove o krsish... J tui best... Amr e j ki valo lagtese... Kivabe bujhay boli...",
+	"Allah tor jibone onk Rahmat r Barkat dik... Toke onk happy koruk,,, Tor sob iccha Allah puron koruk... Toke sobsomoy shustho rakhuk... And tui jeno always tor best ta diye jaite parish.....",
+	"Tui amr life e onk boro blessing... Tui pashe thakle amr life ta onk easy jay... Jibon ta onk bright thake... Ami toke kokkhono haraite chai na... Amdr journey ta jeno prvt er sheidin dorja khola theke ekkbare sesh obdhi jay... Always ei duya tai kori... Sob somoy toke hashi khushi e dekhte chai... Amr onk onk onk valo lage jkhn tui hashte thakish... ✨✨",
+	"Kokhonoi koshto dawar intention thake na re...kokkhonoi na... Ami eta vabteo pari na...shudhu majhe majhe ami vul boli,,, naile misunderstanding hoy... Ami shikar kori... Ami extremely  Sorry ektu jalanor jonne 🤕🙏... Amake maf koiro... Plzzzz",
+	"Thank you for being  part of my life, Love you my Birthday Girl....Tomake sotti e onk valobashi ❤️ Pashe thaiko ✨✨,,,",
+	"Enjoy your day... 💕💕",
+	
+		]		;	
+
+/* 🎵 MUSIC — a cute music-box "Happy Birthday" tune is built in.
+   Speed: bigger number = slower */
+const BEAT = 0.6;
+
+/* 👏 REAL CLAPPING SOUND (optional)
+   Put your 4-5 second clapping file next to this HTML file and write its name, e.g. "clap.mp3".
+   Leave it empty "" to use the built-in synthetic clapping. */
+const CLAP_FILE = "clap.mp3";
+/* ================== END OF EDIT AREA ================== */
+
+
+// ---------- Fill in texts ----------
+document.getElementById("welcomeTitle").textContent = "Hello, " + "Moner Doctor! 🫶";
+document.getElementById("welcomeSub").textContent = WELCOME_SUB;
+document.getElementById("finalTitle").textContent = "Happy Birthday, " + "Amar Pookie" + "!";
+document.getElementById("finalSub").textContent = FINAL_SUB;
+
+// ---------- Page navigation ----------
+const pages = [...document.querySelectorAll(".page")];
+const dotsBox = document.getElementById("dots");
+let cur = 0;
+pages.forEach((_, i) => {
+  const d = document.createElement("div");
+  d.className = "dot"; d.onclick = () => go(i);
+  dotsBox.appendChild(d);
+});
+function go(n) {
+  n = Math.max(0, Math.min(pages.length - 1, n));
+  pages.forEach((p, i) => {
+    p.classList.toggle("active", i === n);
+    p.classList.toggle("left", i < n);
+  });
+  [...dotsBox.children].forEach((d, i) => d.classList.toggle("on", i === n));
+  document.getElementById("prev").disabled = n === 0;
+  document.getElementById("next").disabled = n === pages.length - 1;
+  cur = n;
+}
+document.getElementById("prev").onclick = () => go(cur - 1);
+document.getElementById("next").onclick = () => go(cur + 1);
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") go(cur + 1);
+  if (e.key === "ArrowLeft") go(cur - 1);
+});
+go(0);
+
+// ---------- Floating hearts ----------
+const heartBox = document.getElementById("hearts");
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "fh";
+  h.textContent = ["💖","💕","🌸","💗","✨","🎀","🌻"][Math.floor(Math.random() * 6)];
+  h.style.left = Math.random() * 100 + "%";
+  h.style.fontSize = 14 + Math.random() * 22 + "px";
+  h.style.animationDuration = 6 + Math.random() * 6 + "s";
+  heartBox.appendChild(h);
+  setTimeout(() => h.remove(), 12000);
+}, 500);
+
+// ---------- Confetti ----------
+function confetti(n = 60) {
+  for (let i = 0; i < n; i++) {
+    const c = document.createElement("div");
+    c.className = "fh";
+    c.textContent = ["🎉","💖","🎊","⭐","🌸","🎈"][Math.floor(Math.random() * 6)];
+    c.style.cssText = `left:${Math.random()*100}%;font-size:${16+Math.random()*20}px;animation-duration:${3+Math.random()*3}s;z-index:30;position:fixed;bottom:-30px`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 6500);
+  }
+}
+
+// ---------- Music (music-box tune made with Web Audio, no files needed) ----------
+const midi = [60,60,62,60,65,64, 60,60,62,60,67,65, 60,60,72,69,65,64,62, 70,70,69,65,67,65];
+const dur  = [.75,.25,1,1,1,2, .75,.25,1,1,1,2, .75,.25,1,1,1,1,2, .75,.25,1,1,1,2];
+let ctx = null, playing = false, timer = null, master = null;
+function note(m, len, when) {
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = "triangle"; o.frequency.value = 440 * Math.pow(2, (m - 69) / 12);
+  g.gain.setValueAtTime(0, when);
+  g.gain.linearRampToValueAtTime(.18, when + .02);
+  g.gain.exponentialRampToValueAtTime(.001, when + len * BEAT + .5);
+  o.connect(g); g.connect(master);
+  o.start(when); o.stop(when + len * BEAT + .6);
+}
+function playTune() {
+  let t = ctx.currentTime + .1;
+  midi.forEach((m, i) => { note(m, dur[i], t); t += dur[i] * BEAT; });
+  timer = setTimeout(() => { if (playing) playTune(); }, (t - ctx.currentTime + 1.5) * 1000);
+}
+function musicOn() {
+  try {
+    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+    if (playing) return;   // never start a second track
+    ctx.resume(); master = ctx.createGain(); master.connect(ctx.destination);
+    playing = true; playTune();
+    document.getElementById("music").textContent = "🎵";
+  } catch (e) { console.log(e); }
+}
+function musicOff() {
+  playing = false; clearTimeout(timer);
+  if (master) { master.disconnect(); master = null; }   // silences everything scheduled
+  document.getElementById("music").textContent = "🔇";
+}
+document.getElementById("music").onclick = () => playing ? musicOff() : musicOn();
+
+// ---------- Sound effects (made with Web Audio, no files needed) ----------
+function audio() {
+  ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+  ctx.resume();
+}
+function noise(len) {
+  const b = ctx.createBuffer(1, Math.floor(ctx.sampleRate * len), ctx.sampleRate), d = b.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const s = ctx.createBufferSource(); s.buffer = b; return s;
+}
+// 💨 whoosh of air blowing out the candles
+function blowSound() {
+  try {
+    audio(); const t = ctx.currentTime;
+    const s = noise(1.2), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    f.type = "bandpass"; f.Q.value = .7;
+    f.frequency.setValueAtTime(500, t); f.frequency.linearRampToValueAtTime(1800, t + .9);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.5, t + .2); g.gain.linearRampToValueAtTime(0, t + 1);
+    s.connect(f); f.connect(g); g.connect(ctx.destination); s.start(t); s.stop(t + 1.2);
+  } catch (e) { console.log(e); }
+}
+// 👏 crowd applause: lots of tiny claps that build up and fade out
+function clapSound() {
+  try {
+    audio(); const t0 = ctx.currentTime + .8, LEN = 4.5;
+    // a small "room" echo, so many claps blend into one crowd instead of separate pops
+    const irLen = 1.5, ir = ctx.createBuffer(2, Math.floor(ctx.sampleRate * irLen), ctx.sampleRate);
+    for (let c = 0; c < 2; c++) {
+      const d = ir.getChannelData(c);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3);
+    }
+    const verb = ctx.createConvolver(); verb.buffer = ir;
+    const bus = ctx.createGain(); bus.gain.value = .55;
+    const wet = ctx.createGain(); wet.gain.value = .8;
+    const dry = ctx.createGain(); dry.gain.value = .7;
+    const comp = ctx.createDynamicsCompressor();
+    bus.connect(dry); bus.connect(verb); verb.connect(wet);
+    dry.connect(comp); wet.connect(comp); comp.connect(ctx.destination);
+    // ~230 people clapping; the crowd builds up and then fades out
+    for (let i = 0; i < 230; i++) {
+      const at = t0 + Math.random() * LEN;
+      const env = Math.pow(Math.sin(Math.PI * (at - t0) / LEN), .7);
+      const hits = 1 + Math.floor(Math.random() * 3);          // two palms slapping = a few tiny hits
+      for (let k = 0; k < hits; k++) {
+        const ht = at + k * (.005 + Math.random() * .01);
+        const s = noise(.2), f = ctx.createBiquadFilter(), g = ctx.createGain();
+        f.type = "bandpass"; f.frequency.value = 900 + Math.random() * 1400; f.Q.value = 1.5 + Math.random() * 1.5;
+        const amp = (.05 + .2 * Math.random()) * env;
+        g.gain.setValueAtTime(0, ht);
+        g.gain.linearRampToValueAtTime(amp, ht + .002);
+        g.gain.setTargetAtTime(0, ht + .004, .018 + Math.random() * .02);   // soft "flesh" decay, not a sharp pop
+        s.connect(f); f.connect(g); g.connect(bus); s.start(ht); s.stop(ht + .2);
+      }
+    }
+  } catch (e) { console.log(e); }
+}
+
+// plays your real clapping file if you set CLAP_FILE, otherwise the synthetic one
+function playClap() {
+  if (!CLAP_FILE) { clapSound(); return; }
+  const a = new Audio(CLAP_FILE);
+  setTimeout(() => { a.play().catch(() => clapSound()); }, 700);
+}
+
+// ---------- Page 1 ----------
+document.getElementById("start").onclick = () => { musicOn(); confetti(30); go(1); };
+
+// ---------- Page 2: cake ----------
+document.getElementById("blow").onclick = () => {
+  blowSound(); playClap();
+  // big "Happy Birthday NAME" text
+  const bw = document.getElementById("bigWish");
+  document.getElementById("bigWishText").textContent = "Happy Birthday " + "Cutieeee" + "! 🎉";
+  bw.classList.remove("show"); void bw.offsetWidth; bw.classList.add("show");
+  document.getElementById("cakeTitle").textContent = "Happy Birthday, " + "Ramisha" + "! 🎂";
+  document.getElementById("cake").classList.add("out");
+  document.getElementById("cakeMsg").textContent = "Allah tomar sob wish pura koruk,,, Tomar jibon ta jeno onk sundor hoy 💖💖";
+  confetti(70);
+};
+
+// ---------- Page 3: photos ----------
+const grid = document.getElementById("grid");
+PHOTOS.forEach((p, i) => {
+  const box = document.createElement("div");
+  box.className = "photo";
+  box.style.setProperty("--r", (i % 2 ? 3 : -3) + "deg");
+  const draw = src => {
+    box.innerHTML = (src ? `<img src="${src}" alt="">` : `<div class="ph">＋</div>`) + `<small>${p.caption}</small>`;
+  };
+  draw(p.src);
+  box.onclick = () => {
+    const img = box.querySelector("img");
+    if (img) {
+      const lb = document.getElementById("lightbox");
+      lb.querySelector("img").src = img.src; lb.style.display = "flex";
+    } else {
+      const f = document.createElement("input");
+      f.type = "file"; f.accept = "image/*";
+      f.onchange = () => { if (f.files[0]) draw(URL.createObjectURL(f.files[0])); };
+      f.click();
+    }
+  };
+  grid.appendChild(box);
+});
+document.getElementById("lightbox").onclick = e => e.currentTarget.style.display = "none";
+
+// ---------- Page 4: flip cards ----------
+const cardsBox = document.getElementById("cards");
+CARDS.forEach(c => {
+  const el = document.createElement("div");
+  el.className = "fc";
+  el.innerHTML = `<div class="fi">
+    <div class="face front"><span>${c.icon}</span>${c.title}</div>
+    <div class="face back"><b>${c.title}</b><p>${c.text}</p></div></div>`;
+  el.onclick = () => { el.classList.toggle("flip"); if (el.classList.contains("flip")) confetti(8); };
+  cardsBox.appendChild(el);
+});
+
+// ---------- Page 5: letter ----------
+document.getElementById("env").onclick = () => {
+  const paper = document.getElementById("paper");
+  document.getElementById("env").style.display = "none";
+  document.getElementById("envHint").style.display = "none";
+  paper.style.display = "block";
+  paper.innerHTML = LETTER.map(l => `<p>${l}</p>`).join("") + `<p style="font-family:Pacifico;color:var(--pink);font-size:1.3rem">${FROM} 💕</p>`;
+  confetti(25);
+};
+
+// ---------- Page 5: mini game ----------
+const GOAL = 20;   // ✏️ hearts needed to win
+const WIN_MSG = "You caught all my hearts… just like you caught my real one! 💘";   // ✏️ edit
+const box = document.getElementById("gameBox"), basket = document.getElementById("basket");
+const gameMsg = document.getElementById("gameMsg"), scoreEl = document.getElementById("score");
+let score = 0, items = [], running = false, bx = .5, last = 0, spawnT = 0;
+function setBasket(x) {
+  const r = box.getBoundingClientRect();
+  bx = Math.min(1, Math.max(0, (x - r.left) / r.width));
+  basket.style.left = bx * 100 + "%";
+}
+box.addEventListener("pointermove", e => setBasket(e.clientX));
+box.addEventListener("pointerdown", e => setBasket(e.clientX));
+function showScore() { scoreEl.textContent = "Hearts: " + score + " / " + GOAL; }
+function spawn() {
+  const bad = Math.random() < .22;
+  const el = document.createElement("div");
+  el.className = "gi";
+  el.textContent = bad ? "💔" : ["💖","🌸","💗"][Math.floor(Math.random() * 3)];
+  box.appendChild(el);
+  items.push({el, bad, x: .05 + Math.random() * .85, y: -30, v: 110 + Math.random() * 90});
+}
+function loop(t) {
+  if (!running) return;
+  const dt = Math.min(.05, (t - last) / 1000); last = t;
+  if (pages[cur].id === "gamePage") {
+    spawnT -= dt;
+    if (spawnT <= 0) { spawnT = .65; spawn(); }
+    const W = box.clientWidth, H = box.clientHeight;
+    items = items.filter(it => {
+      it.y += it.v * dt;
+      it.el.style.transform = `translate(${it.x * W}px,${it.y}px)`;
+      if (it.y > H - 55 && it.y < H - 10 && Math.abs(it.x * W + 14 - bx * W) < 36) {
+        score = it.bad ? Math.max(0, score - 1) : score + 1;
+        showScore(); it.el.remove();
+        if (score >= GOAL) win();
+        return false;
+      }
+      if (it.y > H) { it.el.remove(); return false; }
+      return true;
+    });
+  }
+  requestAnimationFrame(loop);
+}
+function win() {
+  running = false;
+  items.forEach(i => i.el.remove()); items = [];
+  gameMsg.textContent = WIN_MSG; gameMsg.style.display = "flex";
+  document.getElementById("playBtn").textContent = "Play again 🎮";
+  confetti(100);
+}
+document.getElementById("playBtn").onclick = () => {
+  items.forEach(i => i.el.remove()); items = [];
+  score = 0; showScore(); gameMsg.style.display = "none";
+  running = true; last = performance.now(); requestAnimationFrame(loop);
+};
+showScore();
+
+// ---------- Page 7 ----------
+document.getElementById("party").onclick = () => confetti(120);
+</script>
+</body>
+</html>
