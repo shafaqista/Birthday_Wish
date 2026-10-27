@@ -148,8 +148,10 @@ html,body{height:100dvh;width:100%;overflow:hidden;overscroll-behavior:none}
 <!-- PAGE 4: FLIP CARDS -->
 <section class="page">
   <h2 style="font-size:2rem">Why You’re Special 💗</h2>
+	
   <p style="margin:0 0 10px;font-size:.9rem">Tap each card to flip it</p>
   <div class="cards" id="cards"></div>
+<button class="btn" style="margin-top:14px" onclick="go(4)">Play a little game 🎮 →</button>
 </section>
 
 <!-- PAGE 5: MINI GAME -->
@@ -159,6 +161,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;overscroll-behavior:none}
   <div id="gameBox"><div id="basket">🧺</div><div id="gameMsg">Ready?</div></div>
   <div style="font-weight:700;margin-bottom:8px" id="score"></div>
   <button class="btn" id="playBtn">Play 🎮</button>
+<button class="btn bounce" id="nextAfterGame" style="display:none;margin-top:10px">Read my letter 💌 →</button>
 </section>
 
 <!-- PAGE 6: LETTER -->
@@ -518,12 +521,15 @@ function win() {
   running = false;
   items.forEach(i => i.el.remove()); items = [];
   gameMsg.textContent = WIN_MSG; gameMsg.style.display = "flex";
+	const ng = document.getElementById("nextAfterGame");
+ng.style.display = "inline-block"; ng.onclick = () => go(5);   // 5 = the letter page
   document.getElementById("playBtn").textContent = "Play again 🎮";
   confetti(100);
 }
 document.getElementById("playBtn").onclick = () => {
   items.forEach(i => i.el.remove()); items = [];
   score = 0; showScore(); gameMsg.style.display = "none";
+	document.getElementById("nextAfterGame").style.display = "none";
   running = true; last = performance.now(); requestAnimationFrame(loop);
 };
 showScore();
