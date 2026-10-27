@@ -133,7 +133,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;overscroll-behavior:none}
   </div>
   <p id="cakeMsg">Close your eyes, make a wish, then blow the candles 🕯️</p>
   <button class="btn" id="blow">Blow the candles 💨</button>
-	<button class="btn bounce" id="nextAfterBlow" style="display:none;margin-top:10px">See our photos 📸 →</button>
+	<button class="btn bounce" id="nextAfterBlow" style="display:none;margin-top:10px">See photos 📸 →</button>
 </section>
 
 <!-- PAGE 3: PHOTOS -->
@@ -142,6 +142,7 @@ html,body{height:100dvh;width:100%;overflow:hidden;overscroll-behavior:none}
   <h3>Khub beshi to nai,,, Ekhn theke chobi tulte hobe🥲, Memories rakha uchit :))</h3>
   <p style="margin:0 0 10px;font-size:.9rem">Tap a photo to see it bigger</p>
   <div class="grid" id="grid"></div>
+<button class="btn" style="margin-top:14px" onclick="go(3)">See why you’re special 💗 →</button>
 </section>
 
 <!-- PAGE 4: FLIP CARDS -->
@@ -413,6 +414,10 @@ document.getElementById("blow").onclick = () => {
   bw.classList.remove("show"); void bw.offsetWidth; bw.classList.add("show");
   document.getElementById("cakeTitle").textContent = "Happy Birthday, " + "Ramisha" + "! 🎂";
   document.getElementById("cake").classList.add("out");
+	// "next page" button appears 1.5 seconds after the candles go out
+const nb = document.getElementById("nextAfterBlow");
+nb.onclick = () => go(2);   // 2 = the photos page (pages count from 0)
+setTimeout(() => nb.style.display = "inline-block", 1500);
   document.getElementById("cakeMsg").textContent = "Allah tomar sob wish pura koruk,,, Tomar jibon ta jeno onk sundor hoy 💖💖";
   confetti(70);
 };
